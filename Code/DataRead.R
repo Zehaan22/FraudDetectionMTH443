@@ -159,3 +159,22 @@ plot(
   main = "Graph-Based Fraud Network",
   layout = layout_with_fr(g)
 )
+
+###############################################################################
+#### Testing Data
+###############################################################################
+# Load test data
+test_data <- read.csv("Data/fraudTest.csv")
+
+# Feature engineering (same as training set)
+test_data <- test_data %>%
+  mutate(
+    trans_date_trans_time = ymd_hms(trans_date_trans_time),
+    hour = hour(trans_date_trans_time),
+    age = year(trans_date_trans_time) - year(ymd(dob)),
+    distance = sqrt((lat - merch_lat)^2 + (long - merch_long)^2)
+  ) %>%
+  select(amt, age, city_pop, hour, distance, is_fraud)
+
+
+
